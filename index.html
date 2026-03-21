@@ -1,0 +1,1776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Ragu Through Europe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --burgundy: #6B1A2E;
+  --dark-burg: #4A1020;
+  --deeper-burg: #2E0A14;
+  --gold: #C4973B;
+  --gold-light: #D4A84B;
+  --gold-pale: #F2E6C2;
+  --gold-faint: #FBF6EC;
+  --cream: #F8F4EE;
+  --charcoal: #2A2A2A;
+  --mid-gray: #777;
+  --light-gray: #E8E3DB;
+  --red-pale: #F9EDED;
+  --white: #fff;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; font-size: 16px; }
+
+body {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  background: var(--deeper-burg);
+  color: var(--charcoal);
+  overflow-x: hidden;
+}
+
+/* ── NOISE TEXTURE OVERLAY ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.35;
+}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--deeper-burg); }
+::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 2px; }
+
+/* ══════════════════════════════
+   SIDEBAR NAV
+══════════════════════════════ */
+#sidebar {
+  position: fixed;
+  left: 0; top: 0;
+  width: 220px;
+  height: 100vh;
+  background: var(--deeper-burg);
+  border-right: 1px solid rgba(196,151,59,0.15);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: transform 0.4s cubic-bezier(.77,0,.18,1);
+}
+
+#sidebar-logo {
+  padding: 28px 20px 20px;
+  border-bottom: 1px solid rgba(196,151,59,0.15);
+}
+#sidebar-logo .logo-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--gold);
+  text-transform: uppercase;
+  line-height: 1.4;
+}
+#sidebar-logo .logo-sub {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 9px;
+  color: rgba(196,151,59,0.5);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+#nav-links {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px 0;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(196,151,59,0.3) transparent;
+}
+#nav-links::-webkit-scrollbar { width: 2px; }
+#nav-links::-webkit-scrollbar-thumb { background: rgba(196,151,59,0.3); }
+
+.nav-section-label {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 8px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: rgba(196,151,59,0.4);
+  padding: 10px 20px 6px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+  border-left: 2px solid transparent;
+}
+.nav-item:hover { background: rgba(196,151,59,0.07); border-left-color: rgba(196,151,59,0.4); }
+.nav-item.active { background: rgba(196,151,59,0.12); border-left-color: var(--gold); }
+
+.nav-item .nav-num {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 9px;
+  color: rgba(196,151,59,0.4);
+  min-width: 18px;
+  font-weight: 600;
+}
+.nav-item.active .nav-num { color: var(--gold); }
+
+.nav-item .nav-flag { font-size: 14px; min-width: 18px; }
+
+.nav-item .nav-name {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: rgba(248,244,238,0.5);
+  text-transform: uppercase;
+  font-weight: 500;
+}
+.nav-item.active .nav-name { color: var(--gold-pale); }
+.nav-item:hover .nav-name { color: rgba(248,244,238,0.8); }
+
+#sidebar-footer {
+  padding: 16px 20px;
+  border-top: 1px solid rgba(196,151,59,0.15);
+  font-family: 'Montserrat', sans-serif;
+  font-size: 8px;
+  color: rgba(196,151,59,0.3);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  line-height: 1.7;
+}
+
+/* ── MOBILE TOGGLE ── */
+#mobile-toggle {
+  display: none;
+  position: fixed;
+  top: 16px; left: 16px;
+  z-index: 200;
+  width: 40px; height: 40px;
+  background: var(--burgundy);
+  border: 1px solid var(--gold);
+  border-radius: 4px;
+  cursor: pointer;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+#mobile-toggle span {
+  display: block; width: 18px; height: 1.5px;
+  background: var(--gold); transition: all 0.3s;
+}
+#sidebar-overlay {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 99;
+}
+
+/* ══════════════════════════════
+   MAIN CONTENT
+══════════════════════════════ */
+#main {
+  margin-left: 220px;
+  min-height: 100vh;
+}
+
+/* ══════════════════════════════
+   HERO
+══════════════════════════════ */
+#hero {
+  min-height: 100vh;
+  background: var(--deeper-burg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 80px 60px;
+  position: relative;
+  overflow: hidden;
+}
+
+#hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(107,26,46,0.5) 0%, transparent 70%);
+}
+
+.hero-ornament {
+  width: 180px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  margin: 0 auto 32px;
+  position: relative;
+  z-index: 1;
+}
+.hero-ornament::before {
+  content: '◆';
+  position: absolute;
+  left: 50%; top: 50%;
+  transform: translate(-50%,-50%);
+  color: var(--gold);
+  font-size: 8px;
+  background: var(--deeper-burg);
+  padding: 0 8px;
+}
+
+.hero-eyebrow {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: rgba(196,151,59,0.7);
+  margin-bottom: 24px;
+  position: relative; z-index: 1;
+}
+
+.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(56px, 9vw, 110px);
+  font-weight: 900;
+  color: var(--white);
+  line-height: 0.9;
+  letter-spacing: -0.02em;
+  position: relative; z-index: 1;
+  animation: fadeUp 1s ease both;
+}
+.hero-title em {
+  font-style: italic;
+  color: var(--gold);
+  display: block;
+}
+
+.hero-subtitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(18px, 2.5vw, 26px);
+  font-style: italic;
+  color: rgba(248,244,238,0.6);
+  margin-top: 28px;
+  position: relative; z-index: 1;
+  animation: fadeUp 1s 0.2s ease both;
+}
+
+.hero-rule {
+  width: 60px;
+  height: 2px;
+  background: var(--gold);
+  margin: 32px auto;
+  position: relative; z-index: 1;
+}
+
+.hero-descriptor {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(196,151,59,0.6);
+  position: relative; z-index: 1;
+  animation: fadeUp 1s 0.4s ease both;
+  line-height: 2;
+}
+
+.hero-countries {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px 8px;
+  max-width: 600px;
+  margin-top: 40px;
+  position: relative; z-index: 1;
+}
+.hero-country-pill {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(248,244,238,0.4);
+  border: 1px solid rgba(196,151,59,0.2);
+  padding: 5px 12px;
+  border-radius: 2px;
+  transition: all 0.2s;
+  cursor: pointer;
+  text-decoration: none;
+}
+.hero-country-pill:hover {
+  color: var(--gold);
+  border-color: var(--gold);
+  background: rgba(196,151,59,0.08);
+}
+
+.hero-scroll {
+  position: absolute;
+  bottom: 40px; left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  z-index: 1;
+  animation: bounce 2s infinite;
+}
+.hero-scroll span {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 8px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: rgba(196,151,59,0.4);
+}
+.hero-scroll-line {
+  width: 1px; height: 40px;
+  background: linear-gradient(180deg, var(--gold), transparent);
+}
+
+/* ══════════════════════════════
+   INTRO SECTION
+══════════════════════════════ */
+.intro-section {
+  background: var(--cream);
+  padding: 80px 60px;
+}
+
+.section-header {
+  margin-bottom: 48px;
+}
+.section-eyebrow {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 9px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 12px;
+}
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 700;
+  color: var(--burgundy);
+  line-height: 1.1;
+}
+.section-rule {
+  width: 48px; height: 2px;
+  background: var(--gold);
+  margin-top: 16px;
+}
+
+.intro-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+}
+
+.intro-block h3 {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--burgundy);
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--gold);
+}
+.intro-block p {
+  font-size: 17px;
+  line-height: 1.75;
+  color: var(--charcoal);
+}
+
+/* Canon recipe panel */
+.canon-panel {
+  background: var(--dark-burg);
+  padding: 60px;
+  margin-top: 0;
+}
+.canon-panel .section-title { color: var(--gold); }
+.canon-panel .section-eyebrow { color: rgba(196,151,59,0.6); }
+
+.canon-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin-top: 40px;
+}
+
+.canon-col-title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 9px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 20px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(196,151,59,0.3);
+}
+
+.ingredient-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 7px 0;
+  border-bottom: 1px solid rgba(196,151,59,0.1);
+  gap: 12px;
+}
+.ingredient-row .i-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 16px;
+  color: var(--gold-pale);
+  flex: 1;
+}
+.ingredient-row .i-qty {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--gold);
+  white-space: nowrap;
+}
+
+.method-step {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 14px;
+  align-items: flex-start;
+}
+.step-num {
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  background: var(--burgundy);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--gold);
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+.step-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 16px;
+  line-height: 1.65;
+  color: rgba(248,244,238,0.8);
+}
+
+.canon-rules {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 32px;
+  padding-top: 32px;
+  border-top: 1px solid rgba(196,151,59,0.2);
+}
+.rule-box {
+  padding: 16px 20px;
+  border-radius: 3px;
+}
+.rule-box.ok { background: rgba(196,151,59,0.1); border-left: 3px solid var(--gold); }
+.rule-box.no { background: rgba(107,26,46,0.4); border-left: 3px solid var(--burgundy); }
+.rule-box-label {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 8px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.rule-box.ok .rule-box-label { color: var(--gold); }
+.rule-box.no .rule-box-label { color: var(--burgundy); filter: brightness(1.8); }
+.rule-box p {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 15px;
+  line-height: 1.6;
+  color: rgba(248,244,238,0.7);
+}
+
+.insight-box {
+  grid-column: 1/-1;
+  background: rgba(196,151,59,0.1);
+  border: 1px solid rgba(196,151,59,0.3);
+  border-left: 4px solid var(--gold);
+  padding: 20px 24px;
+  border-radius: 0 3px 3px 0;
+}
+.insight-box p {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 17px;
+  font-style: italic;
+  color: var(--gold-pale);
+  line-height: 1.7;
+}
+.insight-box strong { color: var(--gold); font-style: normal; }
+
+/* ══════════════════════════════
+   COUNTRY SECTIONS
+══════════════════════════════ */
+.country-section {
+  background: var(--cream);
+  border-top: 1px solid var(--light-gray);
+}
+
+.country-header {
+  background: var(--burgundy);
+  padding: 60px 60px 48px;
+  position: relative;
+  overflow: hidden;
+}
+.country-header::after {
+  content: attr(data-chapter);
+  position: absolute;
+  right: 40px; top: 50%;
+  transform: translateY(-50%);
+  font-family: 'Playfair Display', serif;
+  font-size: 120px;
+  font-weight: 900;
+  color: rgba(255,255,255,0.04);
+  line-height: 1;
+  pointer-events: none;
+  letter-spacing: -0.05em;
+}
+
+.country-header-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+.chapter-tag {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 9px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(196,151,59,0.6);
+  margin-bottom: 10px;
+}
+.country-flag-name {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.country-flag { font-size: 40px; line-height: 1; }
+.country-name-block {}
+.country-name {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(32px, 5vw, 52px);
+  font-weight: 900;
+  color: var(--white);
+  line-height: 1;
+}
+.country-city {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px;
+  font-style: italic;
+  color: var(--gold);
+  margin-top: 4px;
+}
+
+.shop-badge {
+  background: rgba(0,0,0,0.25);
+  border: 1px solid rgba(196,151,59,0.25);
+  padding: 10px 16px;
+  border-radius: 3px;
+  text-align: right;
+  flex-shrink: 0;
+}
+.shop-badge-label {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 7.5px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(196,151,59,0.5);
+  margin-bottom: 4px;
+}
+.shop-badge-name {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: 0.05em;
+}
+
+.country-body {
+  padding: 48px 60px 60px;
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 48px;
+}
+
+.country-left {}
+
+/* Context */
+.section-label {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 8.5px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--burgundy);
+  margin-bottom: 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--gold);
+  display: inline-block;
+}
+
+.context-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px;
+  line-height: 1.8;
+  color: var(--charcoal);
+  margin-bottom: 28px;
+  font-style: italic;
+}
+
+.shop-note {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 16px;
+  line-height: 1.7;
+  color: #555;
+  margin-bottom: 36px;
+  padding: 16px 20px;
+  background: var(--gold-faint);
+  border-left: 3px solid var(--gold);
+}
+
+/* Star ingredient */
+.star-box {
+  background: var(--dark-burg);
+  padding: 28px 32px;
+  border-radius: 2px;
+  margin-bottom: 28px;
+  position: relative;
+  overflow: hidden;
+}
+.star-box::before {
+  content: '★';
+  position: absolute;
+  right: 24px; top: 20px;
+  font-size: 60px;
+  color: rgba(196,151,59,0.07);
+  line-height: 1;
+}
+.star-eyebrow {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 8px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: 0.7;
+  margin-bottom: 8px;
+}
+.star-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--gold);
+  line-height: 1.2;
+  margin-bottom: 14px;
+}
+.star-desc {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 16.5px;
+  line-height: 1.8;
+  color: rgba(248,244,238,0.8);
+}
+
+/* Wine */
+.wine-block {
+  border: 1px solid var(--light-gray);
+  padding: 20px 24px;
+  margin-bottom: 28px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 16px;
+  align-items: start;
+}
+.wine-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--burgundy);
+  line-height: 1.3;
+  margin-bottom: 4px;
+}
+.wine-producer {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 15px;
+  font-style: italic;
+  color: var(--mid-gray);
+  margin-bottom: 10px;
+}
+.wine-note {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 15px;
+  line-height: 1.65;
+  color: #555;
+}
+.wine-price-block { text-align: right; flex-shrink: 0; }
+.wine-price-local {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--burgundy);
+}
+.wine-price-usd {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 10px;
+  color: var(--mid-gray);
+  margin-top: 2px;
+}
+
+/* Country right column */
+.country-right {}
+
+/* Ingredients table */
+.ing-table {
+  margin-bottom: 24px;
+}
+.ing-table-header {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 8px;
+  background: var(--burgundy);
+  padding: 9px 14px;
+  margin-bottom: 0;
+}
+.ing-table-header span {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 7.5px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(242,230,194,0.7);
+  font-weight: 600;
+}
+.ing-table-header span:not(:first-child) { text-align: right; }
+
+.ing-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 8px;
+  padding: 8px 14px;
+  border-bottom: 1px solid rgba(232,227,219,0.6);
+  align-items: center;
+  transition: background 0.15s;
+}
+.ing-row:hover { background: rgba(196,151,59,0.04); }
+.ing-row.even { background: rgba(248,244,238,0.6); }
+.ing-row.even:hover { background: rgba(196,151,59,0.08); }
+.ing-row.star-row {
+  background: var(--gold-pale) !important;
+  border-left: 3px solid var(--gold);
+}
+.ing-row.star-row:hover { background: rgba(196,151,59,0.2) !important; }
+
+.ing-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 15px;
+  color: var(--charcoal);
+  line-height: 1.3;
+}
+.ing-row.star-row .ing-name {
+  font-weight: 600;
+  color: var(--burgundy);
+}
+.ing-qty {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 9px;
+  color: var(--mid-gray);
+  text-align: right;
+  white-space: nowrap;
+}
+.ing-price {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--charcoal);
+  text-align: right;
+  white-space: nowrap;
+}
+.ing-price .usd {
+  display: block;
+  font-size: 8.5px;
+  font-weight: 400;
+  color: var(--mid-gray);
+}
+
+.total-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 8px;
+  padding: 10px 14px;
+  background: var(--burgundy);
+  align-items: center;
+}
+.total-label {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(242,230,194,0.7);
+  font-weight: 600;
+}
+.total-price {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--gold);
+  text-align: right;
+}
+.total-price .usd { display: block; font-size: 9px; font-weight: 400; color: rgba(242,230,194,0.5); }
+
+/* Method */
+.method-list { list-style: none; }
+.method-step-item {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 12px;
+  align-items: flex-start;
+}
+.m-num {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: var(--burgundy);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 8px;
+  font-weight: 700;
+  color: var(--gold);
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+.m-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--charcoal);
+}
+
+/* Departure note */
+.departure-box {
+  background: var(--red-pale);
+  border-left: 3px solid var(--burgundy);
+  padding: 16px 20px;
+  margin-top: 24px;
+}
+.departure-label {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 7.5px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--burgundy);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.departure-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 15px;
+  font-style: italic;
+  line-height: 1.65;
+  color: #444;
+}
+
+/* ══════════════════════════════
+   BACK / SUMMARY
+══════════════════════════════ */
+#summary {
+  background: var(--deeper-burg);
+  padding: 80px 60px;
+}
+#summary .section-title { color: var(--gold-pale); }
+#summary .section-eyebrow { color: rgba(196,151,59,0.5); }
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  margin-top: 40px;
+}
+
+.summary-card {
+  background: rgba(255,255,255,0.03);
+  padding: 20px;
+  border: 1px solid rgba(196,151,59,0.08);
+  transition: all 0.2s;
+  cursor: pointer;
+  text-decoration: none;
+  display: block;
+}
+.summary-card:hover {
+  background: rgba(196,151,59,0.07);
+  border-color: rgba(196,151,59,0.25);
+}
+.s-ch {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 8px;
+  letter-spacing: 0.25em;
+  color: rgba(196,151,59,0.4);
+  margin-bottom: 6px;
+}
+.s-flag { font-size: 20px; margin-bottom: 6px; }
+.s-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: rgba(248,244,238,0.8);
+  margin-bottom: 8px;
+}
+.s-star {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 13px;
+  font-style: italic;
+  color: var(--gold);
+  line-height: 1.4;
+}
+
+/* ══════════════════════════════
+   ANIMATIONS
+══════════════════════════════ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes bounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(8px); }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ══════════════════════════════
+   RESPONSIVE
+══════════════════════════════ */
+@media (max-width: 1024px) {
+  #sidebar { transform: translateX(-100%); }
+  #sidebar.open { transform: translateX(0); }
+  #sidebar-overlay { display: block; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+  #sidebar-overlay.open { opacity: 1; pointer-events: all; }
+  #mobile-toggle { display: flex; }
+  #main { margin-left: 0; }
+  .country-body { grid-template-columns: 1fr; }
+  .country-right { order: -1; }
+  .intro-grid { grid-template-columns: 1fr; }
+  .canon-grid { grid-template-columns: 1fr; }
+  .canon-rules { grid-template-columns: 1fr; }
+  .summary-grid { grid-template-columns: repeat(2, 1fr); }
+  .hero { padding: 80px 32px; }
+  .country-header { padding: 40px 32px 32px; }
+  .country-body { padding: 32px 32px 48px; gap: 32px; }
+  .intro-section { padding: 60px 32px; }
+  .canon-panel { padding: 60px 32px; }
+  #summary { padding: 60px 32px; }
+}
+
+@media (max-width: 600px) {
+  .hero-title { font-size: 48px; }
+  .country-header-top { flex-direction: column; }
+  .shop-badge { text-align: left; align-self: auto; }
+  .summary-grid { grid-template-columns: 1fr; }
+  .wine-block { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- MOBILE TOGGLE -->
+<button id="mobile-toggle" onclick="toggleSidebar()" aria-label="Menu">
+  <span></span><span></span><span></span>
+</button>
+<div id="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+<!-- SIDEBAR -->
+<nav id="sidebar">
+  <div id="sidebar-logo">
+    <div class="logo-title">A Ragu<br>Through Europe</div>
+    <div class="logo-sub">15 Countries · 1 Recipe</div>
+  </div>
+  <div id="nav-links">
+    <div class="nav-section-label">Introduction</div>
+    <a class="nav-item" href="#about">
+      <span class="nav-num">—</span>
+      <span class="nav-flag">📖</span>
+      <span class="nav-name">About</span>
+    </a>
+    <a class="nav-item" href="#canon">
+      <span class="nav-num">—</span>
+      <span class="nav-flag">🏛</span>
+      <span class="nav-name">The Canon</span>
+    </a>
+    <div class="nav-section-label">The Chapters</div>
+    <!-- Nav items injected by JS -->
+  </div>
+  <div id="sidebar-footer">
+    Based on the 2023<br>
+    Accademia Italiana<br>
+    della Cucina
+  </div>
+</nav>
+
+<!-- MAIN -->
+<div id="main">
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-ornament"></div>
+    <div class="hero-eyebrow">A Recipe Series in Fifteen Chapters</div>
+    <h1 class="hero-title">
+      A Ragu
+      <em>Through Europe</em>
+    </h1>
+    <p class="hero-subtitle">One canonical recipe. Fifteen countries. Fifteen departures.</p>
+    <div class="hero-rule"></div>
+    <p class="hero-descriptor">
+      Based on the official 2023 Accademia Italiana della Cucina recipe<br>
+      Deposited at the Bologna Chamber of Commerce, 20 April 2023
+    </p>
+    <div class="hero-countries" id="hero-pills"></div>
+    <div class="hero-scroll">
+      <span>Scroll</span>
+      <div class="hero-scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" class="intro-section">
+    <div class="section-header reveal">
+      <div class="section-eyebrow">The Project</div>
+      <h2 class="section-title">About This Guide</h2>
+      <div class="section-rule"></div>
+    </div>
+    <div class="intro-grid">
+      <div class="intro-block reveal">
+        <h3>The Concept</h3>
+        <p>A video documentary series filmed across fifteen European countries. In each location, the same dish is prepared: Ragù alla Bolognese, following the official recipe deposited by the Accademia Italiana della Cucina at the Bologna Chamber of Commerce on 20 April 2023. The canonical recipe is the reference point. Everything else is a variation on that foundation.</p>
+      </div>
+      <div class="intro-block reveal">
+        <h3>The One Rule</h3>
+        <p>Every chapter contains one locally-sourced, culturally specific ingredient not in the canonical recipe. It must integrate into the cooking process — not be used as garnish. It must change <em>when</em> or <em>how</em> something is cooked, not simply what is served alongside. It must be procurable at a named market in that country. It must be defensible on flavour grounds.</p>
+      </div>
+      <div class="intro-block reveal">
+        <h3>On Pasta</h3>
+        <p>The 2023 Accademia recipe specifies fresh egg tagliatelle. Not spaghetti. Not linguine. Not penne. Every chapter in this guide uses tagliatelle or the closest local equivalent. Where a genuine local pasta substitution exists, it is noted. Where it doesn't, tagliatelle is non-negotiable.</p>
+      </div>
+      <div class="intro-block reveal">
+        <h3>Pricing Standards</h3>
+        <p>All ingredient prices are approximate retail estimates as of early 2026. Costs appear in both local currency and USD equivalent. Exchange rates: EUR/USD 1.095 · GBP/USD 1.275 · SEK/USD 0.0928 · PLN/USD 0.254 · HUF/USD 0.00274 · RON/USD 0.220 · CZK/USD 0.0439.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CANON -->
+  <section id="canon" class="canon-panel">
+    <div class="section-header reveal">
+      <div class="section-eyebrow">The Foundation</div>
+      <h2 class="section-title">The Canonical Recipe</h2>
+      <div class="section-rule"></div>
+    </div>
+    <div class="canon-grid reveal">
+      <div>
+        <div class="canon-col-title">Ingredients — Serves 6</div>
+        <div class="ingredient-row"><span class="i-name">Coarsely ground beef (cartella / pancia / fesone)</span><span class="i-qty">400g</span></div>
+        <div class="ingredient-row"><span class="i-name">Fresh pork pancetta — not smoked, not cured</span><span class="i-qty">150g</span></div>
+        <div class="ingredient-row"><span class="i-name">Strained tomatoes (passata)</span><span class="i-qty">200g</span></div>
+        <div class="ingredient-row"><span class="i-name">Double-concentrate tomato paste</span><span class="i-qty">1 tbsp</span></div>
+        <div class="ingredient-row"><span class="i-name">Onion (peeled)</span><span class="i-qty">~60g</span></div>
+        <div class="ingredient-row"><span class="i-name">Carrot (peeled)</span><span class="i-qty">~60g</span></div>
+        <div class="ingredient-row"><span class="i-name">Celery stalk (trimmed)</span><span class="i-qty">~60g</span></div>
+        <div class="ingredient-row"><span class="i-name">Red or white wine (dry)</span><span class="i-qty">~100ml</span></div>
+        <div class="ingredient-row"><span class="i-name">Whole milk (optional)</span><span class="i-qty">~100ml</span></div>
+        <div class="ingredient-row"><span class="i-name">Extra virgin olive oil</span><span class="i-qty">3 tbsp</span></div>
+        <div class="ingredient-row"><span class="i-name">Light broth or stock cube</span><span class="i-qty">as needed</span></div>
+        <div class="ingredient-row"><span class="i-name">Salt and pepper</span><span class="i-qty">to taste</span></div>
+        <div class="canon-rules">
+          <div class="rule-box ok">
+            <div class="rule-box-label">✓ Permitted (2023)</div>
+            <p>White or red wine. Olive oil or butter (50g). Fresh tagliatelle.</p>
+          </div>
+          <div class="rule-box no">
+            <div class="rule-box-label">✗ Not Permitted (2023)</div>
+            <p>Cream. Smoked pancetta. Garlic. Herbs. Chicken livers.</p>
+          </div>
+          <div class="insight-box">
+            <p>The 2023 recipe's most important change: tomato reduced from 300g to ~250g effective, beef increased from 300g to 400g. The ratio shifted from 1:1 to ~<strong>1:2 (tomato:meat)</strong>. This is a philosophical statement: <strong>this is a meat sauce with tomato — not a tomato sauce with meat</strong>. Every recipe in this guide respects that as its floor.</p>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="canon-col-title">Method</div>
+        <div class="method-step"><div class="step-num">1</div><div class="step-text">Finely dice pancetta; render slowly in a heavy 24–26cm pan with EVOO over medium-low heat until fat runs and pieces are pale gold.</div></div>
+        <div class="method-step"><div class="step-num">2</div><div class="step-text">Add finely chopped onion, carrot, and celery. Sweat gently until soft — 8–10 minutes.</div></div>
+        <div class="method-step"><div class="step-num">3</div><div class="step-text">Add ground beef. Stir over raised heat until the meat sizzles and sputters — the Bolognese "sfrigola."</div></div>
+        <div class="method-step"><div class="step-num">4</div><div class="step-text">Pour in wine. Stir gently until fully evaporated — 3–4 minutes.</div></div>
+        <div class="method-step"><div class="step-num">5</div><div class="step-text">Add strained tomatoes and tomato paste. Cover partially and simmer on the lowest possible heat for a minimum of 2 hours, adding warm broth ladle by ladle as needed.</div></div>
+        <div class="method-step"><div class="step-num">6</div><div class="step-text">Toward the end, stir in whole milk to temper the acidity of the tomato. Adjust salt and pepper.</div></div>
+        <div class="method-step"><div class="step-num">7</div><div class="step-text">Serve with fresh egg tagliatelle. <strong style="color:var(--gold)">Never spaghetti.</strong></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COUNTRY SECTIONS — rendered by JS -->
+  <div id="countries-container"></div>
+
+  <!-- SUMMARY -->
+  <section id="summary">
+    <div class="section-header reveal">
+      <div class="section-eyebrow">All 15 Chapters</div>
+      <h2 class="section-title">At a Glance</h2>
+      <div class="section-rule"></div>
+    </div>
+    <div class="summary-grid reveal" id="summary-grid"></div>
+  </section>
+
+</div><!-- /#main -->
+
+<script>
+// ── COUNTRY DATA ──────────────────────────────────────────────────────────────
+const RATE = {EUR:1.095, GBP:1.275, SEK:0.0928, PLN:0.254, HUF:0.00274, RON:0.220, CZK:0.0439};
+
+const COUNTRIES = [
+  {
+    id:"italy", ch:1, flag:"🇮🇹", name:"Italy", city:"Bologna", currency:"EUR",
+    supermarket:"Conad / Coop",
+    shopNote:"Both chains have strong central branches in Bologna. Conad at Via Rizzoli is well-stocked. For Parmigiano, buy a wedge at the Mercato delle Erbe — never pre-grated.",
+    context:"This is the canonical dish — everything else in this book is measured against what you cook here. Bologna's covered markets (the Quadrilatero) are among the finest in Europe. Buy your beef from a trusted macellaio who will grind cartella or fesone di spalla coarsely to order. The city takes this sauce seriously enough to have registered its recipe with the Chamber of Commerce twice — 1982 and 2023.",
+    starName:"Parmigiano Reggiano DOP (30+ months)",
+    starDesc:"Grated aged Parmigiano from a producer within 30km of Bologna, stirred into the sauce off heat at the very end. Not in the canonical recipe — but universal in every Bolognese home kitchen. Buy a wedge at Mercato delle Erbe and grate it yourself. This is the difference between good and transcendent.",
+    wineName:"Sangiovese di Romagna DOC",
+    wineProducer:"Fattoria Zerbina or Tre Monti",
+    winePrice:8.00,
+    wineNote:"Emilia-Romagna's own Sangiovese — earthier and less polished than Chianti. The honest cook's choice. Half into the pan, rest in the glass.",
+    departure:"The only departure from the 2023 Accademia recipe is the Parmigiano finish — universally practiced in Bologna's home kitchens, though not officially registered.",
+    ingredients:[
+      {name:"Coarse ground beef (cartella/fesone)", qty:"400g", price:3.50, star:false},
+      {name:"Fresh pork pancetta", qty:"150g", price:2.80, star:false},
+      {name:"Strained tomatoes (passata)", qty:"200g", price:0.90, star:false},
+      {name:"Double-concentrate tomato paste", qty:"1 tbsp", price:0.30, star:false},
+      {name:"Carrot, celery, onion", qty:"60g each", price:0.55, star:false},
+      {name:"Extra virgin olive oil", qty:"3 tbsp", price:0.80, star:false},
+      {name:"Whole milk", qty:"100ml", price:0.15, star:false},
+      {name:"Sangiovese di Romagna (cooking)", qty:"100ml", price:1.20, star:false},
+      {name:"Light broth / stock cube", qty:"500ml", price:0.50, star:false},
+      {name:"Salt and black pepper", qty:"to taste", price:0.10, star:false},
+      {name:"Parmigiano Reggiano DOP (30+ months)", qty:"40g grated", price:2.20, star:true},
+      {name:"Fresh egg tagliatelle", qty:"400g", price:2.50, star:false},
+      {name:"★ Bottle: Sangiovese di Romagna DOC", qty:"750ml", price:8.00, star:false},
+    ],
+    method:["Finely chop pancetta; render slowly in the pan with olive oil over low heat until translucent — 5 min.","Add finely diced onion, carrot, celery. Sweat gently 8–10 min without browning.","Raise heat. Add ground beef, break apart, cook until it 'sfrigola' — sputters and catches slightly.","Deglaze with wine. Stir continuously until fully evaporated — 3–4 min.","Add passata and tomato paste. Stir. Reduce heat to the lowest possible simmer.","Cover partially. Cook minimum 2 hours, adding warm broth by the ladleful as needed.","Final 20 min: stir in whole milk. Season with salt and black pepper.","Off heat: fold in finely grated Parmigiano Reggiano until dissolved.","Toss with fresh tagliatelle. Never spaghetti."]
+  },
+  {
+    id:"france", ch:2, flag:"🇫🇷", name:"France", city:"Lyon", currency:"EUR",
+    supermarket:"Carrefour Market / Monoprix",
+    shopNote:"Carrefour on Rue du Président Herriot, central Lyon. For duck fat: Halles de Lyon Paul Bocuse market — visit regardless. It is one of the finest indoor food markets in Europe.",
+    context:"Lyon considers itself the gastronomic capital of France — a city that maintains a guild of female chefs called the Mères Lyonnaises. The French approach to a long meat braise is the closest intellectual equivalent to bolognese anywhere in Europe. Duck fat is the lens through which a Lyon cook would instinctively re-read this dish.",
+    starName:"Graisse de Canard (Duck Fat)",
+    starDesc:"French duck fat replaces olive oil entirely as the cooking medium. Render it first, allow it to pool and become fragrant, then add the pancetta. The result is a sauce with a deeper, rounder, more lingering fat structure than olive oil alone can produce. Available jarred at any supermarket, or from the charcuterie stalls at Les Halles de Lyon Paul Bocuse.",
+    wineName:"Bourgogne Rouge (Côte Chalonnaise)",
+    wineProducer:"Maison Faiveley or Louis Jadot",
+    winePrice:13.00,
+    wineNote:"Burgundy's southern fringe delivers Pinot Noir at accessible prices with the earthy, iron-rich character perfect for a long-cooked meat sauce.",
+    departure:"Duck fat replaces EVOO as the cooking medium entirely. This is the only deliberate departure — and the source of the dish's most distinctive character in this version.",
+    ingredients:[
+      {name:"Coarse ground beef (boeuf haché 15%)", qty:"400g", price:4.20, star:false},
+      {name:"Fresh pork belly (poitrine fraîche)", qty:"150g", price:2.80, star:false},
+      {name:"Strained tomatoes (coulis de tomates)", qty:"200g", price:1.20, star:false},
+      {name:"Double-concentrate tomato paste", qty:"1 tbsp", price:0.40, star:false},
+      {name:"Carrot, celery, onion", qty:"60g each", price:0.55, star:false},
+      {name:"Whole milk (lait entier)", qty:"100ml", price:0.20, star:false},
+      {name:"Bourgogne Rouge (cooking)", qty:"100ml", price:1.80, star:false},
+      {name:"Light chicken broth", qty:"500ml", price:0.60, star:false},
+      {name:"Salt and black pepper", qty:"to taste", price:0.10, star:false},
+      {name:"Graisse de canard (duck fat)", qty:"2 tbsp", price:1.50, star:true},
+      {name:"Fresh egg pasta (pâtes fraîches)", qty:"400g", price:2.50, star:false},
+      {name:"★ Bottle: Bourgogne Rouge (Côte Chalonnaise)", qty:"750ml", price:13.00, star:false},
+    ],
+    method:["Melt duck fat in a heavy pan over medium-low heat until shimmering. This is your foundation — not oil.","Add diced pork belly. Render slowly until fat pools and the meat is lightly golden — 6 min.","Add finely diced onion, carrot, celery. Sweat in the duck-enriched fat — 10 min.","Raise heat. Add ground beef. Cook until it sputters — the French call this 'revenir'.","Deglaze with Burgundy. Stir and scrape until fully evaporated.","Add coulis and tomato concentrate. Reduce to the slowest possible simmer.","Cover partially. Cook 2–2.5 hours, adding broth as needed. Patience is the technique.","Stir in milk in the final 20 min. Adjust seasoning.","Serve with fresh egg pasta or pappardelle."]
+  },
+  {
+    id:"spain", ch:3, flag:"🇪🇸", name:"Spain", city:"Madrid", currency:"EUR",
+    supermarket:"Mercadona",
+    shopNote:"Mercadona at Calle de Alcalá, central Madrid. For pimentón de la Vera: look for the DOP red-and-gold tin — not generic paprika. The difference is non-negotiable.",
+    context:"Spain has no canonical ragù tradition, but it has something arguably more sophisticated: the sofrito. The principle of building fat-soluble flavour through careful vegetable cooking is directly ancestral to the Italian battuto. Adding pimentón de la Vera to the sofrito is how a Spanish cook would instinctively re-read this dish.",
+    starName:"Pimentón de la Vera DOP (Smoked Paprika)",
+    starDesc:"Not generic paprika. Pimentón de la Vera is made from ñora peppers slow-dried over oak wood smoke in Extremadura — the smoke becomes part of the molecule, not a surface flavour. One heaped teaspoon bloomed in hot fat after the sofrito changes the sauce's entire chromatic and aromatic identity. Buy it in the DOP tin. Add it directly to the fat before the meat.",
+    wineName:"Rioja Crianza (Tempranillo)",
+    wineProducer:"CVNE Viña Real or Marqués de Cáceres",
+    winePrice:8.00,
+    wineNote:"A young Rioja Crianza offers oak, fruit, and tannin structure to hold up against a long-cooked meat sauce.",
+    departure:"Pimentón de la Vera bloomed in hot fat before the beef — Spanish sofrito technique. The smoke changes colour and aroma without altering the tomato ratio.",
+    ingredients:[
+      {name:"Coarse ground beef (ternera picada)", qty:"400g", price:3.80, star:false},
+      {name:"Fresh pork belly (panceta fresca)", qty:"150g", price:2.20, star:false},
+      {name:"Strained tomatoes (tomate tamizado)", qty:"200g", price:0.80, star:false},
+      {name:"Double-concentrate tomato paste", qty:"1 tbsp", price:0.30, star:false},
+      {name:"Carrot, celery, onion", qty:"60g each", price:0.55, star:false},
+      {name:"Arbequina EVOO (aove)", qty:"3 tbsp", price:0.80, star:false},
+      {name:"Whole milk", qty:"100ml", price:0.15, star:false},
+      {name:"Rioja (cooking)", qty:"100ml", price:1.20, star:false},
+      {name:"Light broth", qty:"500ml", price:0.40, star:false},
+      {name:"Salt and black pepper", qty:"to taste", price:0.10, star:false},
+      {name:"Pimentón de la Vera DOP", qty:"1 heaped tsp", price:0.90, star:true},
+      {name:"Fresh egg pasta or tagliatelle", qty:"400g", price:1.80, star:false},
+      {name:"★ Bottle: Rioja Crianza (Tempranillo)", qty:"750ml", price:8.00, star:false},
+    ],
+    method:["Render diced pork belly in olive oil over medium-low heat until fat runs, lightly golden.","Add finely diced onion, carrot, celery. Sweat 8 min until soft but not coloured.","Push vegetables aside. Add pimentón de la Vera directly to hot fat. Stir 30 sec — it blooms and darkens.","Add ground beef immediately. Break apart. Cook until sputtering — the pimentón stains everything copper.","Deglaze with Rioja. Stir until fully evaporated.","Add tomatoes and tomato paste. Reduce to lowest simmer.","Cover partially. Cook 2 hours, adding broth as needed.","Stir in milk in final 20 min. Season.","Serve over fresh egg pasta. Finish with a small drizzle of Arbequina EVOO."]
+  },
+  {
+    id:"portugal", ch:4, flag:"🇵🇹", name:"Portugal", city:"Lisbon", currency:"EUR",
+    supermarket:"Pingo Doce",
+    shopNote:"Pingo Doce at Avenida de Roma, Lisbon. For outstanding chouriço de vinho: Mercado de Campo de Ourique — one of Lisbon's best markets.",
+    context:"Portuguese cooking has one of the oldest and deepest pork traditions in Europe. Chouriço de vinho is almost alchemical in what it does to a hot pan. The technique of rendering a cured sausage as the first cooking act is distinctly Iberian and produces a flavour base no other fat can replicate. This version is the most distinctly Portuguese-tasting of the 15 chapters.",
+    starName:"Chouriço de Vinho (Portuguese Wine-Cured Sausage)",
+    starDesc:"Portuguese wine-cured sausage, sliced and rendered first in a cold pan before any other ingredient. As it heats, it releases a deeply spiced, wine-and-paprika-infused fat that becomes the entire cooking medium. Remove the chouriço pieces once rendered — they go back in, chopped fine, at the very end. Nothing else in Europe produces quite this flavour base.",
+    wineName:"Alentejo Red (Aragonês / Touriga Nacional)",
+    wineProducer:"Herdade do Esporão Reserva or Monte Velho",
+    winePrice:9.00,
+    wineNote:"Alentejo reds are full-bodied, warm, and earthy — built for long-cooked meat. Esporão Reserva is one of Portugal's finest values.",
+    departure:"Chouriço de vinho is the primary fat source — rendered first, removed, returned chopped at the end. Changes the cooking medium and adds a wine-and-paprika backbone invisible in texture but present in every bite.",
+    ingredients:[
+      {name:"Coarse ground beef (carne picada de vaca)", qty:"400g", price:3.60, star:false},
+      {name:"Fresh pork belly (entrecosto fresco)", qty:"150g", price:2.00, star:false},
+      {name:"Strained tomatoes (polpa de tomate)", qty:"200g", price:0.80, star:false},
+      {name:"Double-concentrate tomato paste", qty:"1 tbsp", price:0.30, star:false},
+      {name:"Carrot, celery, onion", qty:"60g each", price:0.55, star:false},
+      {name:"Extra virgin olive oil (azeite)", qty:"2 tbsp", price:0.80, star:false},
+      {name:"Whole milk (leite gordo)", qty:"100ml", price:0.15, star:false},
+      {name:"Alentejo red (cooking)", qty:"100ml", price:1.20, star:false},
+      {name:"Light broth", qty:"500ml", price:0.40, star:false},
+      {name:"Salt and black pepper", qty:"to taste", price:0.10, star:false},
+      {name:"Chouriço de vinho", qty:"80g", price:2.20, star:true},
+      {name:"Fresh egg pasta or tagliatelle", qty:"400g", price:1.80, star:false},
+      {name:"★ Bottle: Alentejo Red (Esporão Reserva)", qty:"750ml", price:9.00, star:false},
+    ],
+    method:["Slice chouriço de vinho into coins; place in a cold pan. Heat slowly — the spiced wine-fat renders out.","Once rendered and lightly crisped, remove chouriço pieces. Set aside. Leave fat in pan.","Add a splash of olive oil and diced pork belly to the chouriço-infused fat. Render 5 min.","Add finely diced onion, carrot, celery. Sweat 8–10 min.","Add ground beef, raise heat, cook until sputtering.","Deglaze with Alentejo wine. Stir until evaporated.","Add passata and tomato concentrate. Reduce to lowest simmer.","Partially cover and cook 2 hours, adding broth as needed.","Stir in milk for final 20 min. Chop reserved chouriço fine; fold back in before serving."]
+  },
+  {
+    id:"hungary", ch:5, flag:"🇭🇺", name:"Hungary", city:"Budapest", currency:"HUF",
+    supermarket:"Spar / Tesco",
+    shopNote:"Spar Budapest at Vörösmarty tér. For paprika krém: Nagy Vásárcsarnok (Great Market Hall) — sold in ceramic jars from producers directly. The upper level paprika vendors are the reason to visit.",
+    context:"Hungarian cuisine is built on two things: lard and paprika. Both are present here. The paprika krém is more than a spice — it is a flavour philosophy. Budapest's Great Market Hall is one of the finest food markets in Central Europe. Egri Bikavér at HUF 2,800 a bottle is one of the best value-quality ratios in this entire book.",
+    starName:"Édes Paprika Krém (Sweet Hungarian Paprika Paste)",
+    starDesc:"Hungarian sweet paprika paste — thicker, deeper, and more complex than powdered paprika. Made from ground, roasted Hungarian peppers with a dense, almost jammy texture. Two tablespoons stirred into the sauce after browning the meat — added off heat to prevent burning — changes both the colour and flavour architecture of the dish entirely. Édes Pista is the commercial benchmark. A ceramic jar from the Great Market Hall is the definitive find.",
+    wineName:"Egri Bikavér (Bull's Blood of Eger)",
+    wineProducer:"Gál Tibor or Kovács Nimród Winery",
+    winePrice:2800,
+    wineNote:"Bull's Blood is a blend dominated by Kékfrankos with Kadarka, Merlot, and others. Deeply tannic, earthy, gamey — built for long-cooked meat. ~USD 7.67.",
+    departure:"Sunflower oil replaces EVOO (authentic to Hungarian tradition). Paprika krém added off heat after browning — standard Hungarian technique to prevent burning the paprika.",
+    ingredients:[
+      {name:"Coarse ground beef (darált marhahús)", qty:"400g", price:1600, star:false},
+      {name:"Fresh pork jowl/belly (tokaszalonna)", qty:"150g", price:850, star:false},
+      {name:"Strained tomatoes (passata)", qty:"200g", price:420, star:false},
+      {name:"Double-concentrate tomato paste", qty:"1 tbsp", price:130, star:false},
+      {name:"Carrot, celery, onion", qty:"60g each", price:220, star:false},
+      {name:"Sunflower oil (napraforgóolaj)", qty:"3 tbsp", price:120, star:false},
+      {name:"Whole milk (teljes tej)", qty:"100ml", price:90, star:false},
+      {name:"Egri Bikavér (cooking)", qty:"100ml", price:380, star:false},
+      {name:"Light broth / stock cube", qty:"500ml", price:150, star:false},
+      {name:"Salt and black pepper", qty:"to taste", price:50, star:false},
+      {name:"Édes paprika krém (sweet paprika paste)", qty:"2 tbsp", price:450, star:true},
+      {name:"Wide egg pasta / tagliatelle", qty:"400g", price:550, star:false},
+      {name:"★ Bottle: Egri Bikavér (Gál Tibor)", qty:"750ml", price:2800, star:false},
+    ],
+    method:["Render diced pork jowl or belly in sunflower oil over medium heat — use sunflower oil, not olive oil.","Add finely diced onion, carrot, celery. Sweat 8–10 min.","Add ground beef. Raise heat. Cook until sputtering and browning begins.","REMOVE FROM HEAT. Add paprika krém. Stir vigorously — return to heat immediately.","Deglaze with Egri Bikavér. The wine and paprika form a deep brick-red glaze.","Add passata and tomato paste. Reduce to lowest simmer.","Cover partially. Cook 2 hours, adding broth as needed.","Stir in milk in final 20 min. Season — Hungarian food can take more salt than expected.","Serve over wide egg pasta."]
+  },
+  {
+    id:"germany", ch:6, flag:"🇩🇪", name:"Germany", city:"Hamburg", currency:"EUR",
+    supermarket:"REWE / Edeka",
+    shopNote:"REWE is Germany's best chain for quality meat. For Schwarzwälder Schmalz: any Metzgerei (butcher) in Baden-Württemberg or a good deli counter. It will be in a small jar near the charcuterie.",
+    context:"Germany has one of the most serious and varied cured pork cultures in the world. The Black Forest produces smoked meats and lards of extraordinary quality. Using Schmalz as the base fat brings the dish into dialogue with the Bavarian tradition of Schmalzbrot — and makes visible the fat-architecture most people never think about.",
+    starName:"Schwarzwälder Schmalz (Black Forest Smoked Lard)",
+    starDesc:"Cold-smoked rendered pork lard from the Black Forest, produced by small Metzgereien using beechwood smoke. Added at the very beginning alongside olive oil, it renders into the pan and gives the entire sauce a whisper of cold smoke that is more structural suggestion than pronounced flavour. You cannot identify it in the finished sauce, but you can taste its absence.",
+    wineName:"Spätburgunder (Pinot Noir) from Baden",
+    wineProducer:"Weingut Dr. Heger or Bernhard Huber",
+    winePrice:14.00,
+    wineNote:"Baden's Spätburgunder is Germany's finest red — earthier than Burgundy, with a mineral quality that suits this sauce. Dr. Heger's Kaiserstuhl bottling is the accessible choice.",
+    departure:"Schwarzwälder Schmalz (smoked lard) is added at the beginning with olive oil as co-fat medium. The smoke is structural — almost imperceptible as 'smoked' in the final dish but fundamentally changes the base note.",
+    ingredients:[
+      {name:"Coarse ground beef (Rinderhackfleisch)", qty:"400g", price:4.50, star:false},
+      {name:"Fresh pork belly, unsmoked (Bauchspeck)", qty:"150g", price:2.80, star:false},
+      {name:"Strained tomatoes (passierte Tomaten)", qty:"200g", price:1.00, star:false},
+      {name:"Double-concentrate tomato paste (Tomatenmark)", qty:"1 tbsp", price:0.30, star:false},
+      {name:"Carrot, celery, onion", qty:"60g each", price:0.55, star:false},
+      {name:"Extra virgin olive oil", qty:"2 tbsp", price:0.90, star:false},
+      {name:"Whole milk (Vollmilch)", qty:"100ml", price:0.20, star:false},
+      {name:"Baden Spätburgunder (cooking)", qty:"100ml", price:1.80, star:false},
+      {name:"Beef broth (Rinderbrühe)", qty:"500ml", price:0.60, star:false},
+      {name:"Salt and black pepper", qty:"to taste", price:0.10, star:false},
+      {name:"Schwarzwälder Schmalz (smoked lard)", qty:"1.5 tbsp", price:1.80, star:true},
+      {name:"Fresh egg tagliatelle", qty:"400g", price:2.20, star:false},
+      {name:"★ Bottle: Baden Spätburgunder (Dr. Heger)", qty:"750ml", price:14.00, star:false},
+    ],
+    method:["Place Schwarzwälder Schmalz and olive oil together in a cold pan. Heat slowly until the Schmalz melts and becomes fragrant.","Add diced pork belly. Render in the smoked lard fat — 5 min.","Add finely diced onion, carrot, celery. Sweat 8–10 min in the smoke-infused fat.","Raise heat. Add ground beef. Cook until sputtering and beginning to catch.","Deglaze with Spätburgunder. Stir and scrape until fully evaporated.","Add passata and tomato paste. Stir to combine.","Reduce to lowest possible simmer. Cover partially and cook 2 hours, adding broth as needed.","Stir in milk in final 20 min. Adjust seasoning.","Serve over fresh egg tagliatelle."]
+  },
+  {
+    id:"austria", ch:7, flag:"🇦🇹", name:"Austria", city:"Vienna", currency:"EUR",
+    supermarket:"Billa Plus / Spar",
+    shopNote:"Billa Plus on Mariahilfer Strasse, Vienna. For marjoram and caraway: the Naschmarkt — open since the 16th century, one of Central Europe's finest open-air markets.",
+    context:"Vienna's gastronomic tradition is Central European royalty — a Habsburg empire of food that drew on Hungarian, Czech, Italian, and German influences. The Naschmarkt is the physical manifestation of that culinary cosmopolitanism. Austrian meat cookery is defined by Gulasch and Zwiebelrostbraten — long, slow, aromatic. Marjoram and caraway are the aromatic fingerprint of that tradition.",
+    starName:"Majoran & Kümmel (Marjoram & Caraway Seeds)",
+    starDesc:"Dried marjoram is the defining herb of Austrian meat cookery — warm, piney, slightly anise-like, used in Gulasch, Leberkäse, and roasts. Caraway adds an earthy, slightly bitter counterpoint. Both are added to the vegetable base before the meat, blooming in hot fat. The result reads as unmistakably Alpine without overwhelming the sauce's Italian architecture. Use one teaspoon marjoram and half a teaspoon caraway — not more.",
+    wineName:"Blaufränkisch (Burgenland)",
+    wineProducer:"Moric or Weingut Prieler",
+    winePrice:12.00,
+    wineNote:"Austria's finest red — deep, dark, with notes of cherry, leather, and black pepper. Moric's village-level bottling is the accessible entry.",
+    departure:"Marjoram and caraway bloomed in fat before the beef — the Austrian technique of extracting essential oils from dried herbs in hot fat rather than adding them to liquid.",
+    ingredients:[
+      {name:"Coarse ground beef (Rinderfaschiertes)", qty:"400g", price:4.30, star:false},
+      {name:"Fresh pork belly, unsmoked (Bauchspeck)", qty:"150g", price:2.60, star:false},
+      {name:"Strained tomatoes", qty:"200g", price:1.00, star:false},
+      {name:"Double-concentrate tomato paste", qty:"1 tbsp", price:0.30, star:false},
+      {name:"Carrot, celery, onion", qty:"60g each", price:0.55, star:false},
+      {name:"Extra virgin olive oil", qty:"3 tbsp", price:0.90, star:false},
+      {name:"Whole milk (Vollmilch)", qty:"100ml", price:0.20, star:false},
+      {name:"Blaufränkisch (cooking)", qty:"100ml", price:1.50, star:false},
+      {name:"Beef or veal broth (Rindsuppe)", qty:"500ml", price:0.60, star:false},
+      {name:"Salt and black pepper", qty:"to taste", price:0.10, star:false},
+      {name:"Dried marjoram (Majoran)", qty:"1 tsp", price:0.30, star:true},
+      {name:"Caraway seeds (Kümmel)", qty:"1/2 tsp", price:0.30, star:true},
+      {name:"Fresh egg tagliatelle", qty:"400g", price:2.20, star:false},
+      {name:"★ Bottle: Blaufränkisch (Moric)", qty:"750ml", price:12.00, star:false},
+    ],
+    method:["Render diced pork belly in olive oil over medium-low heat until fat runs, pale gold.","Add finely diced onion. Sweat 5 min. Add carrot and celery. Continue 5 more min.","Add dried marjoram and caraway seeds to the vegetable-fat mixture. Stir 60 sec — they bloom.","Add ground beef. Raise heat. Cook until sputtering and beginning to catch.","Deglaze with Blaufränkisch. Stir until evaporated.","Add passata and tomato paste. Reduce heat to lowest simmer.","Cover partially. Cook 2 hours, adding broth as needed.","Stir in milk in final 20 min. Adjust seasoning.","Serve over fresh egg pasta. Do not add more herbs at the finish."]
+  },
+  {
+    id:"croatia", ch:8, flag:"🇭🇷", name:"Croatia", city:"Rovinj, Istria", currency:"EUR",
+    supermarket:"Konzum / Tommy",
+    shopNote:"Konzum is Croatia's largest chain. For fresh white truffle: Zigante Tartufi in Livade (30 min from Rovinj) — the finest truffle shop in Istria. SEASON: October–December. Outside season, use high-quality truffle paste (10g).",
+    context:"Istria spent time under Venetian, Habsburg, and Italian rule — its food is a palimpsest of those cultures. The local dialect mixes Croatian and Italian. Istrian truffles were served in Venetian noble kitchens in the 17th century. Istrian olive oil regularly wins international awards. This is the most luxurious chapter in the book — and the most expensive to film.",
+    starName:"Tartufo Bianco Istriano (Istrian White Truffle)",
+    starDesc:"Istria produces some of the finest white truffles in the world — a 2019 Zigante truffle set the Guinness record at 1.31kg. Fresh white truffle is shaved over the finished pasta at the table, not cooked into the sauce. Heat destroys its volatile aromatic compounds. The sauce gets a teaspoon of quality truffle oil off heat as a bridge. Season: October to December. This is the most expensive chapter in the book (~€54 / ~$59 total ingredients).",
+    wineName:"Plavac Mali (Dingač DOC)",
+    wineProducer:"Grgić Wines or Saints Hills",
+    winePrice:18.00,
+    wineNote:"Croatia's great red grape — related to Zinfandel, full-bodied, high in alcohol, saline mineral finish. Grgić (founded by Napa legend Mike Grgich) is Croatia's most internationally recognised producer.",
+    departure:"The truffle is an addition, not a substitution. Truffle oil off heat bridges the sauce; shaved fresh truffle at service is theatrical and essential. No Parmigiano: the truffle cannot compete with cheese.",
+    ingredients:[
+      {name:"Coarse ground beef (mljevena govedina)", qty:"400g", price:4.00, star:false},
+      {name:"Fresh pork belly (svježa slanina)", qty:"150g", price:2.50, star:false},
+      {name:"Strained tomatoes (passata rajčice)", qty:"200g", price:0.90, star:false},
+      {name:"Double-concentrate tomato paste", qty:"1 tbsp", price:0.30, star:false},
+      {name:"Carrot, celery, onion", qty:"60g each", price:0.55, star:false},
+      {name:"Istrian extra virgin olive oil", qty:"3 tbsp", price:1.50, star:false},
+      {name:"Whole milk (mlijeko)", qty:"100ml", price:0.20, star:false},
+      {name:"Plavac Mali (cooking)", qty:"100ml", price:2.00, star:false},
+      {name:"Light broth (juha)", qty:"500ml", price:0.50, star:false},
+      {name:"Salt and black pepper", qty:"to taste", price:0.10, star:false},
+      {name:"Quality Istrian truffle oil", qty:"1 tsp", price:3.00, star:false},
+      {name:"Fresh Istrian white truffle ★", qty:"10–15g", price:18.00, star:true},
+      {name:"Fresh egg tagliatelle", qty:"400g", price:2.50, star:false},
+      {name:"★ Bottle: Plavac Mali Dingač (Grgić)", qty:"750ml", price:18.00, star:false},
+    ],
+    method:["Render diced pork belly in Istrian EVOO over medium-low heat until golden.","Add finely diced onion, carrot, celery. Sweat 8–10 min.","Add ground beef. Raise heat. Cook until sputtering.","Deglaze with Plavac Mali. Stir until evaporated.","Add passata and tomato paste. Reduce to lowest simmer.","Cover partially. Cook 2 hours, adding warm broth as needed.","Stir in milk in final 20 min. Adjust seasoning.","OFF HEAT: stir in 1 tsp quality truffle oil. Do not return to heat after.","Dress tagliatelle with the sauce. At the table, shave 10–15g fresh white truffle directly over each plate.","No cheese. The truffle is the finish."]
+  },
+  {
+    id:"greece", ch:9, flag:"🇬🇷", name:"Greece", city:"Athens", currency:"EUR",
+    supermarket:"AB Vasilopoulos / Sklavenitis",
+    shopNote:"AB Vasilopoulos flagship, central Athens. For cinnamon and allspice: Varvakeios Agora central market — the spice vendors here are exceptional and will have every variety available.",
+    context:"Greeks have been making meat sauces with warm spices for centuries — the tradition comes from Byzantine and Ottoman cooking, where cinnamon and allspice in savoury preparations were markers of refinement. Pastitsio is the Greek equivalent of lasagne, and its meat layer is unmistakably spiced. Adding these two spices to a bolognese is less a departure than a cultural translation.",
+    starName:"Κανέλα & Μπαχάρι (Cinnamon Stick & Allspice Berries)",
+    starDesc:"The most intellectually provocative addition in this book. Cinnamon and allspice in a meat sauce are the signature of pastitsio and moussaka — Greece's own long-cooked meat traditions. One cinnamon stick and three whole allspice berries simmered in the sauce produce a warmth that most tasters cannot immediately identify. The sauce tastes 'richer' and 'more complex' before anyone realises why. Remove both before serving. This is the addition that will generate the most debate online.",
+    wineName:"Agiorgitiko (Nemea PDO)",
+    wineProducer:"Gaia Wines or Domaine Skouras",
+    winePrice:10.00,
+    wineNote:"Greece's finest red grape from Nemea in the Peloponnese — deep colour, ripe cherry fruit, soft tannins. Gaia's Notios is the accessible entry.",
+    departure:"Cinnamon stick and allspice berries simmered whole in the sauce — the pastitsio technique. Completely removed before serving. Most subtly transformative chapter: tasters can't identify the spice but consistently rate the sauce as 'richer.'",
+    ingredients:[
+      {name:"Coarse ground beef (μοσχαρίσιος κιμάς)", qty:"400g", price:4.20, star:false},
+      {name:"Fresh pork belly (φρέσκο λαρδί)", qty:"150g", price:2.80, star:false},
+      {name:"Strained tomatoes (passata)", qty:"200g", price:1.00, star:false},
+      {name:"Double-concentrate tomato paste", qty:"1 tbsp", price:0.40, star:false},
+      {name:"Carrot, celery, onion", qty:"60g each", price:0.55, star:false},
+      {name:"Extra virgin olive oil (ελαιόλαδο)", qty:"3 tbsp", price:1.20, star:false},
+      {name:"Whole milk (πλήρες γάλα)", qty:"100ml", price:0.20, star:false},
+      {name:"Agiorgitiko (cooking)", qty:"100ml", price:1.20, star:false},
+      {name:"Chicken or veal broth", qty:"500ml", price:0.50, star:false},
+      {name:"Salt and black pepper", qty:"to taste", price:0.10, star:false},
+      {name:"Cinnamon stick (κανέλα)", qty:"1 whole", price:0.30, star:true},
+      {name:"Allspice berries (μπαχάρι)", qty:"3 whole", price:0.20, star:true},
+      {name:"Fresh tagliatelle or chylopites pasta", qty:"400g", price:2.00, star:false},
+      {name:"★ Bottle: Agiorgitiko Nemea (Gaia)", qty:"750ml", price:10.00, star:false},
+    ],
+    method:["Render diced pork belly in generous Greek EVOO over medium-low heat until golden.","Add finely diced onion, carrot, celery. Sweat 8–10 min.","Add ground beef. Raise heat. Cook until sputtering.","Deglaze with Agiorgitiko. Stir until evaporated.","Add passata and tomato paste. Stir to combine.","Add the cinnamon stick and allspice berries whole — press gently into the sauce to submerge.","Reduce to lowest simmer. Cover partially and cook 2 hours, adding broth as needed.","Stir in milk for final 20 min.","BEFORE SERVING: remove and discard the cinnamon stick and allspice berries.","Season and serve over tagliatelle. A drizzle of Greek EVOO to finish."]
+  },
+  {
+    id:"poland", ch:10, flag:"🇵🇱", name:"Poland", city:"Warsaw", currency:"PLN",
+    supermarket:"Biedronka / Piotr i Paweł",
+    shopNote:"Biedronka is Poland's best-value quality chain. For kiełbasa myśliwska: Hala Mirowska market in Warsaw has the finest regional selection — buy the dried, cold-smoked variety.",
+    context:"Polish food culture is built on preserved and smoked pork — kiełbasa, boczek, smalec. The concept of rendering a smoked sausage to extract its infused fat is an instinct in Polish kitchens, not a technique. Warsaw's Hala Mirowska is one of Central Europe's most atmospheric food halls — visit it before shopping.",
+    starName:"Kiełbasa Myśliwska (Hunter's Cold-Smoked Sausage)",
+    starDesc:"Kiełbasa myśliwska is a dry-cured, cold-smoked Polish sausage made from pork and veal, seasoned with juniper and pepper. Used here not as a protein but as a fat source — sliced thin, rendered slowly until its juniper-and-smoke-infused fat runs into the pan, then removed and returned chopped at the end. The flavour base this produces is unlike anything else available in a European kitchen.",
+    wineName:"Winnica Płochockich Rondo (Polish Red)",
+    wineProducer:"Winnica Płochockich (Małopolska region)",
+    winePrice:65,
+    wineNote:"Poland has a small but growing wine industry in Małopolska and Lubuskie. Rondo is the most reliable red grape in the Polish climate. A genuinely filmable moment — Polish wine exists and surprises. ~USD 16.51.",
+    departure:"Kiełbasa myśliwska rendered for fat (not served whole) changes the cooking medium. Sunflower oil partially replaces EVOO — authentic to the Polish kitchen tradition.",
+    ingredients:[
+      {name:"Coarse ground beef (mielona wołowina)", qty:"400g", price:18, star:false},
+      {name:"Fresh pork belly, unsmoked (świeży boczek)", qty:"150g", price:10, star:false},
+      {name:"Strained tomatoes (passata)", qty:"200g", price:5, star:false},
+      {name:"Double-concentrate tomato paste", qty:"1 tbsp", price:2, star:false},
+      {name:"Carrot, celery, onion", qty:"60g each", price:3.30, star:false},
+      {name:"Sunflower oil (olej słonecznikowy)", qty:"2 tbsp", price:1.50, star:false},
+      {name:"Whole milk (mleko pełnotłuste)", qty:"100ml", price:0.80, star:false},
+      {name:"Polish red or quality Merlot (cooking)", qty:"100ml", price:8, star:false},
+      {name:"Beef broth (bulion wołowy)", qty:"500ml", price:3, star:false},
+      {name:"Salt and black pepper", qty:"to taste", price:0.50, star:false},
+      {name:"Kiełbasa myśliwska (hunter's sausage)", qty:"100g", price:9, star:true},
+      {name:"Egg pasta / makaron jajeczny", qty:"400g", price:6, star:false},
+      {name:"★ Bottle: Winnica Płochockich Rondo", qty:"750ml", price:65, star:false},
+    ],
+    method:["Slice kiełbasa myśliwska into thin coins. Place in a cold pan with a splash of oil. Heat slowly — the juniper-smoke-fat renders out over 6–8 min.","Remove sausage pieces. Set aside. Leave the rendered fat in the pan.","Add diced fresh pork belly to the sausage fat. Render 5 min.","Add finely diced onion, carrot, celery. Sweat 8–10 min.","Add ground beef. Raise heat. Cook until sputtering.","Deglaze with Polish red wine. Stir until evaporated.","Add passata and tomato paste. Reduce to lowest simmer.","Cover partially. Cook 2 hours, adding broth as needed.","Stir in milk in final 20 min.","Chop reserved kiełbasa into small pieces. Fold back into sauce before serving."]
+  },
+  {
+    id:"sweden", ch:11, flag:"🇸🇪", name:"Sweden", city:"Stockholm", currency:"SEK",
+    supermarket:"ICA Maxi / Hemköp",
+    shopNote:"ICA Maxi on Fleminggatan, Stockholm. Wine: Systembolaget is mandatory — Sweden's state alcohol monopoly is the only legal wine retailer. No supermarket wine. Plan ahead.",
+    context:"This is the most geographically extreme chapter in the book — the furthest a bolognese has travelled from Bologna. Swedish food culture is built on preserved and fermented flavours, foraged ingredients, and the clean clarity of good fat. Juniper is to Swedish cooking what pimentón is to Spanish: a definitive aromatic identity.",
+    starName:"Enbär & Lingonsylt (Juniper Berries & Lingonberry Preserve)",
+    starDesc:"Juniper berries — lightly crushed and added to the fat with the vegetables — bring a resinous, forest-floor quality that is the defining aromatic of Scandinavian game cookery. Six berries is enough; ten is too many. Lingonberry preserve (two tablespoons stirred in with the milk at the end) adds a controlled tartness that cuts the fat of the sauce with precision. Together they move the dish northward without breaking it.",
+    wineName:"Skånsk Röd — Swedish Pinot Noir",
+    wineProducer:"Blaxsta Vingård or Åkessons (via Systembolaget)",
+    winePrice:185,
+    wineNote:"Sweden's wine industry is concentrated in Skåne in the deep south. Blaxsta produces a Pinot Noir of genuine quality. Available via Systembolaget only. A genuine conversation piece on film. ~USD 17.17.",
+    departure:"Rapeseed oil replaces EVOO (authentic to the Swedish kitchen). Juniper berries (removed before serving) + lingonberry preserve (remains in sauce) = dual Nordic addition. Most geographically extreme chapter.",
+    ingredients:[
+      {name:"Coarse ground beef (nötfärs)", qty:"400g", price:42, star:false},
+      {name:"Fresh pork belly, unsmoked (sidfläsk)", qty:"150g", price:28, star:false},
+      {name:"Strained tomatoes (krossade tomater)", qty:"200g", price:14, star:false},
+      {name:"Double-concentrate tomato paste (tomatpuré)", qty:"1 tbsp", price:5, star:false},
+      {name:"Carrot, celery, onion", qty:"60g each", price:14, star:false},
+      {name:"Rapeseed oil (rapsolja)", qty:"3 tbsp", price:6, star:false},
+      {name:"Whole milk (standardmjölk 3%)", qty:"100ml", price:4, star:false},
+      {name:"Swedish Pinot Noir (cooking)", qty:"100ml", price:22, star:false},
+      {name:"Beef broth (nötbuljong)", qty:"500ml", price:8, star:false},
+      {name:"Salt and black pepper", qty:"to taste", price:2, star:false},
+      {name:"Juniper berries (enbär), crushed", qty:"6 berries", price:5, star:true},
+      {name:"Lingonberry preserve (lingonsylt)", qty:"2 tbsp", price:8, star:true},
+      {name:"Fresh egg tagliatelle", qty:"400g", price:28, star:false},
+      {name:"★ Bottle: Swedish Pinot Noir (Systembolaget)", qty:"750ml", price:185, star:false},
+    ],
+    method:["Render diced pork belly in rapeseed oil over medium-low. Swedish cooking uses rapeseed, not olive oil.","Add finely diced onion, carrot, celery and lightly crushed juniper berries. Sweat together 8–10 min — the juniper releases slowly into the fat.","Add ground beef. Raise heat. Cook until sputtering.","Deglaze with Pinot Noir. Stir until fully evaporated.","Add strained tomatoes and tomato paste. Reduce to lowest simmer.","Cover partially. Cook 2 hours, adding warm broth as needed.","Final 20 min: stir in whole milk and lingonberry preserve together. Trust the tartness.","Remove the juniper berries. Season with salt and pepper.","Serve over fresh egg tagliatelle."]
+  },
+  {
+    id:"uk", ch:12, flag:"🇬🇧", name:"United Kingdom", city:"London", currency:"GBP",
+    supermarket:"Waitrose / M&S Food",
+    shopNote:"Waitrose on Marylebone High Street or the Canary Wharf branch. For English wine: Waitrose stocks Chapel Down (Kent) and Bolney Estate (Sussex). Buy original Lea & Perrins only — no substitutes.",
+    context:"Britain's food culture is having a genuine renaissance. But it has always had one ingredient hiding in its cupboard that the rest of the world borrows without credit. Worcestershire sauce is in every great burger, every Bloody Mary, every Caesar salad — and quietly in the ragù of more than one Michelin-starred Italian chef in London. This chapter is an act of culinary justice.",
+    starName:"Lea & Perrins Worcestershire Sauce (Worcester, England, since 1837)",
+    starDesc:"Made in Worcester, England since 1837 from tamarind, anchovies, molasses, garlic, onion, and spices — Worcestershire sauce is one of the most complex fermented condiments in the world. One tablespoon added to the sauce with the tomatoes amplifies meatiness without announcing itself. Nobody can identify it in the finished sauce, but every professional chef knows it is there.",
+    wineName:"English Pinot Noir (Sussex or Kent)",
+    wineProducer:"Chapel Down (Kent) or Bolney Estate (West Sussex)",
+    winePrice:16.00,
+    wineNote:"English red wine has arrived. Chapel Down's Pinot Noir and Bolney Estate's from Sussex are serious, pale, earthy reds. An argument for England's wine future.",
+    departure:"Worcestershire sauce added with the tomatoes — one tablespoon only. Its role is to amplify the umami of the beef, not to flavour the sauce directly. This version will provoke strong opinions.",
+    ingredients:[
+      {name:"Coarse ground beef mince (15–20% fat)", qty:"400g", price:4.50, star:false},
+      {name:"Fresh pork belly, unsmoked", qty:"150g", price:3.00, star:false},
+      {name:"Strained tomatoes (passata)", qty:"200g", price:1.00, star:false},
+      {name:"Double-concentrate tomato purée", qty:"1 tbsp", price:0.30, star:false},
+      {name:"Carrot, celery, onion", qty:"60g each", price:0.70, star:false},
+      {name:"Extra virgin olive oil", qty:"3 tbsp", price:1.20, star:false},
+      {name:"Whole milk", qty:"100ml", price:0.20, star:false},
+      {name:"English Pinot Noir (cooking)", qty:"100ml", price:2.00, star:false},
+      {name:"Light beef stock", qty:"500ml", price:0.80, star:false},
+      {name:"Salt and black pepper", qty:"to taste", price:0.10, star:false},
+      {name:"Lea & Perrins Worcestershire Sauce", qty:"1 tbsp", price:1.00, star:true},
+      {name:"Fresh egg tagliatelle", qty:"400g", price:2.50, star:false},
+      {name:"★ Bottle: English Pinot Noir (Chapel Down)", qty:"750ml", price:16.00, star:false},
+    ],
+    method:["Render diced fresh pork belly in olive oil over medium-low heat until fat runs and pieces are pale gold.","Add finely diced onion, carrot, celery. Sweat 8–10 min.","Add ground beef. Raise heat. Cook until sputtering and browning begins.","Deglaze with English Pinot Noir. Stir until fully evaporated.","Add passata, tomato purée, and Worcestershire sauce at the same time. Stir to combine.","Reduce to lowest possible simmer. Cover partially. Cook 2 hours, adding stock as needed.","Stir in milk in final 20 min. Season.","Serve over fresh egg tagliatelle. Consider a very fine grating of aged Cheddar if feeling brave."]
+  },
+  {
+    id:"romania", ch:13, flag:"🇷🇴", name:"Romania", city:"Bucharest", currency:"RON",
+    supermarket:"Kaufland / Mega Image",
+    shopNote:"Kaufland is Romania's best supermarket for quality and value. For smoked cârnați: Obor market in Bucharest — the oldest and largest traditional market in Romania. The smoked meat stalls are a cultural education.",
+    context:"Romania is one of the most underfilmed food cultures in Europe. Its wine industry is genuinely world-class and almost entirely unknown internationally. Its smoked pork traditions — cârnați, caltaboș, tobă — are among the most sophisticated in Eastern Europe. This chapter may surprise more viewers than any other in the series.",
+    starName:"Cârnați Afumați (Romanian Cold-Smoked Sausage)",
+    starDesc:"Romanian smoked cârnați are made from pork and beef seasoned with garlic, thyme, and paprika before cold-smoking over beechwood. Used here not as a protein but as a fat source — sliced thin, rendered slowly until its smoked, garlic-spiced fat runs into the pan, then removed and returned chopped at the end. The fat these sausages release is darker, garlicier, and more intensely smoky than any other version in this book.",
+    wineName:"Fetească Neagră (Dealu Mare / Murfatlar DOC)",
+    wineProducer:"Cramele Recaș or Davino 'Flamboyant'",
+    winePrice:60,
+    wineNote:"Romania's greatest indigenous red — deep, inky, dark plum, smoked earth, distinctive minerality. World-class wine at a fraction of Western European prices. One of the book's great discoveries. ~USD 13.20.",
+    departure:"Cârnați afumați functions identically to chouriço in the Portuguese chapter — rendered for fat, removed, returned chopped at the end. The Romanian version produces a darker, more intensely garlicked result.",
+    ingredients:[
+      {name:"Coarse ground beef (carne tocată vită)", qty:"400g", price:22, star:false},
+      {name:"Fresh pork belly, unsmoked (costită proaspătă)", qty:"150g", price:14, star:false},
+      {name:"Strained tomatoes (passata)", qty:"200g", price:7, star:false},
+      {name:"Double-concentrate tomato paste", qty:"1 tbsp", price:2.50, star:false},
+      {name:"Carrot, celery, onion", qty:"60g each", price:4, star:false},
+      {name:"Sunflower oil (ulei de floarea-soarelui)", qty:"2 tbsp", price:2, star:false},
+      {name:"Whole milk (lapte integral)", qty:"100ml", price:2, star:false},
+      {name:"Fetească Neagră (cooking)", qty:"100ml", price:8, star:false},
+      {name:"Beef broth", qty:"500ml", price:4, star:false},
+      {name:"Salt and black pepper", qty:"to taste", price:0.50, star:false},
+      {name:"Cârnați afumați (Romanian smoked sausage)", qty:"100g", price:12, star:true},
+      {name:"Tagliatelle", qty:"400g", price:10, star:false},
+      {name:"★ Bottle: Fetească Neagră (Cramele Recaș)", qty:"750ml", price:60, star:false},
+    ],
+    method:["Slice cârnați into coins. Place in a cold pan with a splash of sunflower oil. Heat slowly — the smoked garlic-fat renders over 6–8 min.","Remove sausage pieces. Set aside. Leave the dark, fragrant rendered fat in the pan.","Add diced fresh pork belly to the sausage fat. Render 5 min.","Add finely diced onion, carrot, celery. Sweat 8–10 min.","Add ground beef. Raise heat. Cook until sputtering and browning.","Deglaze with Fetească Neagră. Stir until fully evaporated.","Add passata and tomato paste. Reduce to lowest simmer.","Cover partially. Cook 2 hours, adding warm broth as needed.","Stir in milk in final 20 min. Season generously.","Chop reserved cârnați fine. Fold back into sauce before serving."]
+  },
+  {
+    id:"czech", ch:14, flag:"🇨🇿", name:"Czech Republic", city:"Prague", currency:"CZK",
+    supermarket:"Albert / Tesco",
+    shopNote:"Albert (Ahold) at Palladium mall, central Prague. Kozel Tmavé (Dark) or Bernard Černý beer: any potraviny corner shop or Albert. Choose the bottle, not can, for cooking.",
+    context:"The Czech Republic has the highest per-capita beer consumption in the world. Bohemian brewing is a civilisation — dark lagers, unfiltered kellerbiers, centuries-old monastery recipes. Using dark beer as a braising liquid is a natural extension of how Czech cooks approach long-cooked meat dishes like svíčková.",
+    starName:"Tmavé Pivo — Bohemian Dark Beer (Kozel Tmavé or Bernard Černý)",
+    starDesc:"Dark Bohemian beer replaces wine entirely as the deglazing and braising liquid. Added after the meat is browned, the pour produces a deglaze of extraordinary depth: roasted malt adds caramel, coffee, and bitter chocolate notes that behave like a slow-cooked jus. The beer also acts as primary braising liquid throughout. The resulting sauce is darker, more complex, and slightly bitter in the best possible way. This is the strongest argument in the book that wine is not the only option.",
+    wineName:"Moravian Frankovka (Blaufränkisch)",
+    wineProducer:"Château Valtice or Vinné sklepy Valtice",
+    winePrice:195,
+    wineNote:"Moravia produces excellent Frankovka — dark, spiced, notes of cherry and pepper. Drink alongside the beer-braised ragù. ~USD 8.56.",
+    departure:"Dark beer replaces wine entirely — the single most dramatic structural departure from the 2023 Accademia recipe in this book. Tomato ratio stays canonical. The result is darker, richer, and more bitter than any other version.",
+    ingredients:[
+      {name:"Coarse ground beef (mleté hovězí maso)", qty:"400g", price:120, star:false},
+      {name:"Fresh pork belly (čerstvý bůček)", qty:"150g", price:75, star:false},
+      {name:"Strained tomatoes (protlak / passata)", qty:"200g", price:28, star:false},
+      {name:"Double-concentrate tomato paste", qty:"1 tbsp", price:9, star:false},
+      {name:"Carrot, celery, onion", qty:"60g each", price:15, star:false},
+      {name:"Lard (sádlo) or sunflower oil", qty:"3 tbsp", price:8, star:false},
+      {name:"Whole milk (plnotučné mléko)", qty:"100ml", price:7, star:false},
+      {name:"Light broth (vývar)", qty:"250ml", price:8, star:false},
+      {name:"Salt and black pepper", qty:"to taste", price:3, star:false},
+      {name:"Kozel Tmavé / Bernard Černý (dark beer)", qty:"330ml bottle", price:28, star:true},
+      {name:"Broad egg pasta / tagliatelle", qty:"400g", price:38, star:false},
+      {name:"★ Bottle: Moravian Frankovka (Ch. Valtice)", qty:"750ml", price:195, star:false},
+    ],
+    method:["Render diced pork belly in lard or sunflower oil over medium-low heat. Use lard if you can — it is traditional.","Add finely diced onion, carrot, celery. Sweat 8–10 min.","Add ground beef. Raise heat. Cook until sputtering.","DEGLAZE WITH DARK BEER — pour the full 330ml into the pan. Stir and scrape as it foams and lifts all the fond.","Add passata and tomato paste. Stir.","Reduce to lowest simmer. Cover partially and cook 2 hours, adding broth (not more beer) as needed.","Stir in milk in final 20 min. Adjust seasoning.","Serve over broad egg pasta. Open the Frankovka."]
+  },
+  {
+    id:"netherlands", ch:15, flag:"🇳🇱", name:"Netherlands", city:"Amsterdam", currency:"EUR",
+    supermarket:"Albert Heijn",
+    shopNote:"Albert Heijn XL at Amsterdam Centraal. For Oude Gouda: De Kaaskamer on Runstraat — the finest cheese shop in the Netherlands. Ask for 'Oude Kaas' — 2-year minimum. Do not use young Gouda.",
+    context:"The Netherlands gave Europe aged cheese technology, herring curing traditions, and the global spice trade. Aged Gouda is one of the most sophisticated dairy products in the world; most of it simply gets exported before ageing properly. Using it as a sauce finisher is an argument that the Dutch cheese tradition belongs in the same conversation as Parmigiano Reggiano.",
+    starName:"Oude Gouda — 2-Year Aged (Old Amsterdam or Beemster XO)",
+    starDesc:"Two-year aged Gouda is a completely different product from the mild, rubbery variety most people know. After 24 months it develops hard tyrosine crystals, a deeply nutty almost caramel-like flavour, and a granular texture similar to Parmigiano Reggiano. Grated fine on a Microplane and folded into the sauce off heat in the final step, it dissolves and adds a butterscotch-and-salt depth unlike any other cheese in Europe. Do not use young Gouda.",
+    wineName:"Dutch Pinot Noir (Limburg Province)",
+    wineProducer:"Apostelhoeve or Domaine Slavantie",
+    winePrice:16.00,
+    wineNote:"The Netherlands has a wine industry in Limburg province where the soil and microclimate support Pinot Noir. Apostelhoeve is the oldest and most respected Dutch winery.",
+    departure:"2-year aged Gouda folded off heat — analogous to the Italian Parmigiano finish but with butterscotch/crystal depth unique to Oude Kaas. Canonical recipe otherwise unchanged.",
+    ingredients:[
+      {name:"Coarse ground beef (rundergehakt)", qty:"400g", price:4.80, star:false},
+      {name:"Fresh pork belly (verse buikspek)", qty:"150g", price:3.20, star:false},
+      {name:"Strained tomatoes (gezeefde tomaten)", qty:"200g", price:1.20, star:false},
+      {name:"Double-concentrate tomato paste (tomatenpuree)", qty:"1 tbsp", price:0.40, star:false},
+      {name:"Carrot, celery, onion", qty:"60g each", price:0.70, star:false},
+      {name:"Extra virgin olive oil", qty:"3 tbsp", price:1.00, star:false},
+      {name:"Whole milk (volle melk)", qty:"100ml", price:0.20, star:false},
+      {name:"Dutch Pinot Noir (cooking)", qty:"100ml", price:2.00, star:false},
+      {name:"Light broth (bouillon)", qty:"500ml", price:0.60, star:false},
+      {name:"Salt and black pepper", qty:"to taste", price:0.10, star:false},
+      {name:"Oude Gouda / Old Amsterdam (2-year aged)", qty:"60g, finely grated", price:2.80, star:true},
+      {name:"Fresh egg tagliatelle", qty:"400g", price:2.50, star:false},
+      {name:"★ Bottle: Dutch Pinot Noir (Apostelhoeve)", qty:"750ml", price:16.00, star:false},
+    ],
+    method:["Render diced pork belly in olive oil over medium-low heat until fat runs and pieces are pale gold.","Add finely diced onion, carrot, celery. Sweat 8–10 min.","Add ground beef. Raise heat. Cook until sputtering.","Deglaze with Dutch Pinot Noir. Stir until evaporated.","Add passata and tomato paste. Reduce to lowest simmer.","Cover partially and cook 2 hours, adding broth as needed.","Stir in milk in final 20 min. Adjust seasoning.","OFF HEAT: grate Oude Gouda very finely (Microplane) and fold into the sauce. Do not return to heat.","Toss immediately with fresh egg tagliatelle and serve."]
+  }
+];
+
+// ── HELPERS ──────────────────────────────────────────────────────────────────
+function fmtPrice(val, currency) {
+  if(val >= 1000) return `${currency} ${Math.round(val).toLocaleString()}`;
+  if(val >= 100) return `${currency} ${Math.round(val)}`;
+  return `${currency} ${val.toFixed(2)}`;
+}
+function toUSD(val, currency) {
+  const rate = RATE[currency] || 1;
+  return `$${(val * rate).toFixed(2)}`;
+}
+
+// ── BUILD NAV ────────────────────────────────────────────────────────────────
+const navLinks = document.getElementById('nav-links');
+COUNTRIES.forEach(ct => {
+  const a = document.createElement('a');
+  a.className = 'nav-item';
+  a.href = `#${ct.id}`;
+  a.dataset.id = ct.id;
+  a.innerHTML = `<span class="nav-num">${String(ct.ch).padStart(2,'0')}</span><span class="nav-flag">${ct.flag}</span><span class="nav-name">${ct.name}</span>`;
+  navLinks.appendChild(a);
+});
+
+// ── BUILD HERO PILLS ─────────────────────────────────────────────────────────
+const heroPills = document.getElementById('hero-pills');
+COUNTRIES.forEach(ct => {
+  const a = document.createElement('a');
+  a.className = 'hero-country-pill';
+  a.href = `#${ct.id}`;
+  a.textContent = `${ct.flag} ${ct.name}`;
+  heroPills.appendChild(a);
+});
+
+// ── BUILD COUNTRY SECTIONS ────────────────────────────────────────────────────
+const container = document.getElementById('countries-container');
+COUNTRIES.forEach((ct, idx) => {
+  const total = ct.ingredients.reduce((s,i)=>s+i.price,0);
+  const section = document.createElement('section');
+  section.id = ct.id;
+  section.className = 'country-section';
+
+  const ingRows = ct.ingredients.map((ing, i) => {
+    const cls = [
+      'ing-row',
+      i%2===0 ? 'even' : '',
+      ing.star ? 'star-row' : ''
+    ].filter(Boolean).join(' ');
+    return `<div class="${cls}">
+      <span class="ing-name">${ing.name}</span>
+      <span class="ing-qty">${ing.qty}</span>
+      <span class="ing-price">${fmtPrice(ing.price, ct.currency)}<span class="usd">${toUSD(ing.price, ct.currency)}</span></span>
+    </div>`;
+  }).join('');
+
+  const methodSteps = ct.method.map((step,i)=>`
+    <li class="method-step-item">
+      <div class="m-num">${i+1}</div>
+      <div class="m-text">${step}</div>
+    </li>`).join('');
+
+  section.innerHTML = `
+    <div class="country-header" data-chapter="${String(ct.ch).padStart(2,'0')}">
+      <div class="chapter-tag">Chapter ${ct.ch} of 15</div>
+      <div class="country-header-top">
+        <div class="country-flag-name">
+          <div class="country-flag">${ct.flag}</div>
+          <div class="country-name-block">
+            <div class="country-name">${ct.name}</div>
+            <div class="country-city">${ct.city}</div>
+          </div>
+        </div>
+        <div class="shop-badge">
+          <div class="shop-badge-label">Shop</div>
+          <div class="shop-badge-name">${ct.supermarket}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="country-body">
+      <div class="country-left">
+        <div class="section-label">Where to Shop</div>
+        <div class="shop-note">${ct.shopNote}</div>
+
+        <div class="section-label">Context</div>
+        <div class="context-text">${ct.context}</div>
+
+        <div class="star-box">
+          <div class="star-eyebrow">★ Star Local Ingredient</div>
+          <div class="star-name">${ct.starName}</div>
+          <div class="star-desc">${ct.starDesc}</div>
+        </div>
+
+        <div class="section-label">The Wine</div>
+        <div class="wine-block">
+          <div>
+            <div class="wine-name">${ct.wineName}</div>
+            <div class="wine-producer">${ct.wineProducer}</div>
+            <div class="wine-note">${ct.wineNote}</div>
+          </div>
+          <div class="wine-price-block">
+            <div class="wine-price-local">${fmtPrice(ct.winePrice, ct.currency)}</div>
+            <div class="wine-price-usd">${toUSD(ct.winePrice, ct.currency)}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="country-right">
+        <div class="section-label">Ingredients &amp; Prices</div>
+        <div class="ing-table">
+          <div class="ing-table-header">
+            <span>Ingredient</span>
+            <span>Qty</span>
+            <span>${ct.currency} / USD</span>
+          </div>
+          ${ingRows}
+          <div class="total-row">
+            <span class="total-label">Total Cost</span>
+            <span></span>
+            <span class="total-price">${fmtPrice(total, ct.currency)}<span class="usd">${toUSD(total, ct.currency)}</span></span>
+          </div>
+        </div>
+
+        <div class="section-label">Recipe Method</div>
+        <ol class="method-list">${methodSteps}</ol>
+
+        <div class="departure-box">
+          <div class="departure-label">Departure from Canon</div>
+          <div class="departure-text">${ct.departure}</div>
+        </div>
+      </div>
+    </div>
+  `;
+  container.appendChild(section);
+});
+
+// ── BUILD SUMMARY ─────────────────────────────────────────────────────────────
+const summaryGrid = document.getElementById('summary-grid');
+COUNTRIES.forEach(ct => {
+  const a = document.createElement('a');
+  a.className = 'summary-card';
+  a.href = `#${ct.id}`;
+  a.innerHTML = `
+    <div class="s-ch">Ch. ${String(ct.ch).padStart(2,'0')}</div>
+    <div class="s-flag">${ct.flag}</div>
+    <div class="s-name">${ct.name}</div>
+    <div class="s-star">${ct.starName}</div>
+  `;
+  summaryGrid.appendChild(a);
+});
+
+// ── INTERSECTION OBSERVER (nav active state) ─────────────────────────────────
+const sections = document.querySelectorAll('section[id]');
+const navItems = document.querySelectorAll('.nav-item[data-id]');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting) {
+      navItems.forEach(n => n.classList.remove('active'));
+      const active = document.querySelector(`.nav-item[data-id="${entry.target.id}"]`);
+      if(active) {
+        active.classList.add('active');
+        active.scrollIntoView({block:'nearest', behavior:'smooth'});
+      }
+    }
+  });
+}, { threshold: 0.15 });
+sections.forEach(s => observer.observe(s));
+
+// ── REVEAL ON SCROLL ─────────────────────────────────────────────────────────
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if(e.isIntersecting) {
+      e.target.classList.add('visible');
+      revealObserver.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+// ── MOBILE SIDEBAR ────────────────────────────────────────────────────────────
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sidebar-overlay').classList.toggle('open');
+}
+
+// Close sidebar on nav click (mobile)
+document.querySelectorAll('.nav-item').forEach(item => {
+  item.addEventListener('click', () => {
+    if(window.innerWidth <= 1024) toggleSidebar();
+  });
+});
+</script>
+</body>
+</html>
